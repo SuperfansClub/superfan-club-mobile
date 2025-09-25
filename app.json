@@ -4,18 +4,12 @@
     "slug": "superfan-club-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "platforms": [
       "android",
       "ios",
       "web"
     ],
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#3B82F6"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -30,10 +24,6 @@
       }
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#3B82F6"
-      },
       "package": "com.superfanclub.business",
       "versionCode": 1,
       "permissions": [
@@ -42,9 +32,7 @@
         "android.permission.WAKE_LOCK"
       ]
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
+    "web": {},
     "plugins": [],
     "extra": {
       "apiUrl": "https://api.twelvelabs.tech",
