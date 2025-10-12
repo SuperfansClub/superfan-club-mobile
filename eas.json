@@ -4,32 +4,12 @@
     "appVersionSource": "local"
   },
   "build": {
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      }
-    },
     "preview": {
       "distribution": "internal",
       "android": {
-        "buildType": "apk"
-      },
-      "env": {
-        "NODE_ENV": "production"
-      }
-    },
-    "production": {
-      "android": {
-        "buildType": "app-bundle"
-      },
-      "ios": {
-        "buildConfiguration": "Release"
+        "buildType": "apk",
+        "gradleCommand": ":app:assembleRelease"
       }
     }
-  },
-  "submit": {
-    "production": {}
   }
 }

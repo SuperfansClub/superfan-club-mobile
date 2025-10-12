@@ -4,14 +4,8 @@
     "slug": "superfan-club-mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "sdkVersion": "54.0.0",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "platforms": [
-      "android",
-      "ios",
-      "web"
-    ],
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -20,16 +14,6 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.superfanclub.business",
-      "buildNumber": "1",
-      "infoPlist": {
-        "UIBackgroundModes": [
-          "remote-notification"
-        ]
-      }
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -42,9 +26,6 @@
         "android.permission.VIBRATE",
         "android.permission.WAKE_LOCK"
       ]
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
     },
     "plugins": [],
     "extra": {
