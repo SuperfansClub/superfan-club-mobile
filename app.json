@@ -19,7 +19,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#3B82F6"
       },
-      "package": "com.superfanclub.business",
+      "package": "com.superfansclub.mobile",
       "versionCode": 1,
       "permissions": [
         "android.permission.RECEIVE_BOOT_COMPLETED",
