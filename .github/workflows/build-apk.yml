@@ -4,11 +4,6 @@ on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
-    inputs:
-      force_build:
-        description: 'Force build even without changes'
-        required: false
-        default: 'false'
 
 jobs:
   build:
@@ -32,19 +27,16 @@ jobs:
         token: ${{ secrets.EXPO_TOKEN }}
 
     - name: 📲 Install dependencies
-      working-directory: mobile-app
       run: |
-        echo "📦 Installing mobile app dependencies..."
+        echo "📦 Installing dependencies..."
         npm install --legacy-peer-deps
         echo "✅ Dependencies installed successfully"
 
     - name: 🏗️ Build APK with EAS
-      working-directory: mobile-app
       run: |
         echo "🚀 Starting Superfan Club APK build..."
         echo "⏱️  This typically takes 10-15 minutes..."
         
-        # Build the APK
         npx eas build --platform android --profile preview --non-interactive --wait
         
         if [ $? -eq 0 ]; then
@@ -57,11 +49,9 @@ jobs:
         EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
     - name: 📥 Download APK
-      working-directory: mobile-app
       run: |
         echo "📥 Getting latest build information..."
         
-        # Get the latest build info with better error handling
         BUILD_INFO=$(npx eas build:list --platform android --limit 1 --json)
         BUILD_URL=$(echo "$BUILD_INFO" | jq -r '.[0].artifacts.buildUrl // empty')
         BUILD_STATUS=$(echo "$BUILD_INFO" | jq -r '.[0].status // empty')
@@ -88,47 +78,24 @@ jobs:
           exit 1
         fi
 
-    - name: 🚀 Deploy to Hosting System
-      run: |
-        echo "🚀 Deploying APK to hosting system..."
-        
-        # Create hosting directory
-        mkdir -p public/downloads
-        
-        # Copy APK to hosting directory
-        if [ -f "mobile-app/superfan-club-v1.0.0.apk" ]; then
-          cp mobile-app/superfan-club-v1.0.0.apk public/downloads/
-          echo "✅ APK deployed to hosting system!"
-          echo "📱 Available at: /static/downloads/superfan-club-v1.0.0.apk"
-          echo "📊 Hosted file size: $(du -h public/downloads/superfan-club-v1.0.0.apk | cut -f1)"
-          ls -la public/downloads/
-        else
-          echo "❌ APK file not found for deployment"
-          exit 1
-        fi
-
     - name: 📤 Upload APK Artifact
       uses: actions/upload-artifact@v4
       with:
         name: superfan-club-apk-v1.0.0
-        path: public/downloads/superfan-club-v1.0.0.apk
+        path: superfan-club-v1.0.0.apk
         retention-days: 30
 
     - name: 📊 Build Summary
       run: |
         echo "## 🎉 Superfan Club APK Build Complete!" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "Your mobile app has been successfully built and deployed!" >> $GITHUB_STEP_SUMMARY
+        echo "Your mobile app has been successfully built!" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
         echo "### 📱 Download Information" >> $GITHUB_STEP_SUMMARY
         echo "- **App Name**: Superfan Club Business" >> $GITHUB_STEP_SUMMARY
         echo "- **File**: superfan-club-v1.0.0.apk" >> $GITHUB_STEP_SUMMARY
-        echo "- **Size**: $(du -h public/downloads/superfan-club-v1.0.0.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Size**: $(du -h superfan-club-v1.0.0.apk | cut -f1)" >> $GITHUB_STEP_SUMMARY
         echo "- **Platform**: Android" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY
-        echo "### 🌐 Access Your App" >> $GITHUB_STEP_SUMMARY
-        echo "1. Go to your Superfan Club web app" >> $GITHUB_STEP_SUMMARY
-        echo "2. Navigate to Settings > Mobile App" >> $GITHUB_STEP_SUMMARY
-        echo "3. Click 'Download APK' to get your app" >> $GITHUB_STEP_SUMMARY
-        echo "" >> $GITHUB_STEP_SUMMARY
-        echo "🎊 **Your customers can now download and use your mobile app!**" >> $GITHUB_STEP_SUMMARY
+        echo "### 📥 Download APK" >> $GITHUB_STEP_SUMMARY
+        echo "Go to the Artifacts section below to download your APK!" >> $GITHUB_STEP_SUMMARY
