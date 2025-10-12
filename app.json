@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "Superfan Club",
+    "slug": "superfan-club-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "sdkVersion": "54.0.0",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#3B82F6"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.superfanclub.business",
+      "buildNumber": "1",
+      "infoPlist": {
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#3B82F6"
+      },
+      "package": "com.superfanclub.business",
+      "versionCode": 1,
+      "permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.VIBRATE",
+        "android.permission.WAKE_LOCK"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [],
+    "extra": {
+      "apiUrl": "https://56ac3b63-8319-469f-bf69-ed75605af1f3-00-1my3hb9q1uspg.picard.replit.dev",
+      "eas": {
+        "projectId": "dbd40b12-676c-46d8-bb75-0a4076cf3fe2"
+      }
+    },
+    "owner": "shiyas12ahamed"
+  }
+}

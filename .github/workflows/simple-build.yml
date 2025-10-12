@@ -1,0 +1,100 @@
+name: Simple APK Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type'
+        required: true
+        default: 'preview'
+        type: choice
+        options:
+        - preview
+        - production
+
+jobs:
+  build-apk:
+    name: Build Superfan Club APK
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        registry-url: https://registry.npmjs.org/
+
+    - name: Setup Expo and EAS
+      uses: expo/expo-github-action@v8
+      with:
+        eas-version: latest
+        token: ${{ secrets.EXPO_TOKEN }}
+
+    - name: Install dependencies
+      run: |
+        cd mobile-app
+        npm install expo@~50.0.0 expo-status-bar@~1.11.1 react@18.2.0 react-native@0.73.6
+        npm install @babel/core@^7.20.0 --save-dev
+
+    - name: Verify project configuration
+      run: |
+        cd mobile-app
+        cat package.json
+        cat app.json
+
+    - name: Build APK with EAS
+      run: |
+        cd mobile-app
+        npx eas build --platform android --profile preview --non-interactive
+      env:
+        EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        CI: 1
+
+    - name: Wait for build completion
+      run: |
+        cd mobile-app
+        sleep 30
+        echo "Checking build status..."
+        npx eas build:list --platform android --limit 1
+
+    - name: Get build URL and download
+      run: |
+        cd mobile-app
+        # Wait a bit more for build to complete
+        sleep 60
+        
+        # Get the latest build
+        BUILD_URL=$(npx eas build:list --platform android --limit 1 --json | jq -r '.[0].artifacts.buildUrl // empty')
+        
+        if [ -n "$BUILD_URL" ] && [ "$BUILD_URL" != "null" ]; then
+          echo "Downloading APK from: $BUILD_URL"
+          curl -L -o superfan-club-mobile.apk "$BUILD_URL"
+          ls -la superfan-club-mobile.apk
+        else
+          echo "Build URL not available yet, creating placeholder"
+          echo "Build initiated - check EAS dashboard for completion"
+          touch superfan-club-mobile-building.txt
+        fi
+
+    - name: Upload to hosting
+      run: |
+        mkdir -p public/downloads
+        if [ -f mobile-app/superfan-club-mobile.apk ]; then
+          cp mobile-app/superfan-club-mobile.apk public/downloads/
+          echo "✅ APK uploaded to hosting directory"
+        else
+          echo "⏳ Build still in progress"
+        fi
+        ls -la public/downloads/
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: superfan-club-mobile-apk
+        path: |
+          mobile-app/superfan-club-mobile.apk
+          mobile-app/superfan-club-mobile-building.txt
+        if-no-files-found: ignore
