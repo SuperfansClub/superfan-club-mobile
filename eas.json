@@ -8,8 +8,7 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk",
-        "gradleCommand": ":app:assembleRelease",
-        "credentialsSource": "remote"
+        "gradleCommand": ":app:assembleRelease"
       }
     },
     "production": {
