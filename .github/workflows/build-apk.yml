@@ -37,7 +37,7 @@ jobs:
         echo "🚀 Starting Superfan Club APK build..."
         echo "⏱️  This typically takes 10-15 minutes..."
         
-        npx eas build --platform android --profile preview --non-interactive --wait
+        npx eas build --platform android --profile production --no-wait
         
         if [ $? -eq 0 ]; then
           echo "✅ Build completed successfully!"
